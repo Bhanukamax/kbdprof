@@ -19,7 +19,10 @@ fn callback(event: Event) {
 fn write_to_db(key_code: Key) {
     let connection = sqlite::open(":keys").expect("should have open a db connection");
     let code = format!("INSERT INTO keys (name) VALUES ('{:?}');", key_code);
-    connection.execute(code).expect("should insert data to db");
+
+    if let Err(error) = connection.execute(code) {
+        println!("error wirtting to db: {}", error)
+    }
 }
 
 fn create_table() {
