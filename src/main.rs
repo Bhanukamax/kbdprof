@@ -1,11 +1,21 @@
+use log::{error, info};
 use rdev::{listen, Event, EventType, Key};
-use sqlite;
+use simplelog::{Config, LevelFilter, WriteLogger};
+use std::fs::File;
 
 fn main() {
-    println!("Hello, world agaaaain!");
+    println!("starting kbd profiler!");
+    let _ = WriteLogger::init(
+        LevelFilter::Trace,
+        Config::default(),
+        File::create(".kbd_profile_log").expect("should create the log file"),
+    );
+
+    info!("Starting the kbd profiler");
 
     if let Err(error) = listen(callback) {
-        println!("Error: {:?}", error)
+        println!("Error: {:?}", error);
+        error!("{:?}", error);
     }
 }
 
@@ -21,7 +31,8 @@ fn write_to_db(key_code: Key) {
     let code = format!("INSERT INTO keys (name) VALUES ('{:?}');", key_code);
 
     if let Err(error) = connection.execute(code) {
-        println!("error wirtting to db: {}", error)
+        println!("error wirtting to db: {}", error);
+        error!("error writting to db: {}", error);
     }
 }
 
