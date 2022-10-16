@@ -5,6 +5,7 @@ use std::fs::File;
 
 fn main() {
     println!("starting kbd profiler!");
+    create_table();
     let _ = WriteLogger::init(
         LevelFilter::Trace,
         Config::default(),
@@ -20,7 +21,6 @@ fn main() {
 }
 
 fn callback(event: Event) {
-    create_table();
     if let EventType::KeyPress(key) = event.event_type {
         write_to_db(key);
     }
