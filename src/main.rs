@@ -1,5 +1,3 @@
-use std::fmt::format;
-
 use rdev::{listen, Event, EventType, Key};
 use sqlite;
 
